@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html style="font-size: 16px;">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Search Results">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+    <title>search-order</title>
+    <link rel="stylesheet" href="{% static '/styles/nicepage1.css' %}" media="screen">
+    <link rel="stylesheet" href="{% static '/styles/search_order1.css' %}" media="screen">
+    <script class="u-script" type="text/javascript" src="{% static '/scripts/jquery1.js' %}" defer=""></script>
+    <script class="u-script" type="text/javascript" src="{% static '/scripts/nicepage1.js' %}" defer=""></script>
+    <meta name="generator" content="Nicepage 4.10.5, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+
+
+        <script src="https://kit.fontawesome.com/67c66657c7.js"></script>
+
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": "",
+		"logo": "images/default-logo.png"
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="search-order">
+    <meta property="og:type" content="website">
+</head>
+
+<body class="u-body u-xl-mode">
+    <input type="checkbox" id="check">
+  <nav>
+    <div class="icon">WTF</div>
+    <div class="search_box">
+      <input type="search" placeholder="Search Here">
+      <span class="fa fa-search"></span>
+    </div>
+    <ol>
+      <li>
+        <a href="{% url 'home' %}">home</a>
+      </li>
+      <li>
+        <a href="{% url 'order' %}">order</a>
+      </li>
+      <li>
+        <a href="{% url 'Log-In' %}">login</a>
+      </li>
+      <li>
+        <a href="{% url 'logout' %}">log out</a>
+      </li>
+      <li>
+        <a href="{% url 'cart' %}">cart</a>
+      </li>
+    </ol>
+    <label for="check" class="bar">
+      <span class="fa fa-bars" id="bars"></span>
+      <span class="fa fa-times" id="times"></span>
+    </label>
+  </nav>
+    <section class="u-clearfix u-section-1" id="sec-2046">
+        <div class="u-clearfix u-sheet u-sheet-1">
+
+
+            {% if resturant %}
+
+            <h1 class="u-text u-text-default u-text-1">You Searched for {{ resturant }}</h1>
+
+            {% for i in Restaurants %}
+                
+                <div class="u-expanded-width u-list u-list-1">
+                  
+                    <div class="u-repeater u-repeater-1">
+                      
+                        <div class="u-container-style u-list-item u-repeater-item">
+                         
+                            <div class="u-container-layout u-similar-container u-container-layout-1">
+                              
+                                <img src="{% static 'images/'|add:i.image %}" alt="" class="u-expanded-width u-image u-image-default u-image-1">
+                                <div class="order__name">
+                                    <h2><a href = "{% url 'product' i.name %}">{{ i.name }}</h2>
+                                    <p>{{ i.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            {% endfor %}
+            {% else %}
+
+
+            <h1 class="u-text u-text-default u-text-1">No Search..</h1>
+            {% endif %}
+        </div>
+    </section>    
+
+</body>
+
+</html>

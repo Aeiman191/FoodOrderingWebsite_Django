@@ -1,0 +1,131 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'styles/cart.css' %}">
+  <link id="u-theme-google-font" rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+  <link rel="stylesheet" type="text/css"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/67c66657c7.js"></script>
+  <script class="u-script" type="text/javascript" src="{% static '/scripts/cart.js' %}" defer=""></script>
+
+  <title>Cart</title>
+</head>
+
+<body class="u-body u-xl-mode">
+  <input type="checkbox" id="check">
+  <nav>
+    <div class="icon">WTF</div>
+    <div class="search_box">
+      <input type="search" placeholder="Search Here">
+      <span class="fa fa-search"></span>
+    </div>
+    <ol>
+      <li>
+        <a href="{% url 'home' %}">home</a>
+      </li>
+      <li>
+        <a href="{% url 'order' %}">order</a>
+      </li>
+      <li>
+        <a href="{% url 'Log-In' %}">login</a>
+      </li>
+      <li>
+        <a href="{% url 'logout' %}">log out</a>
+      </li>
+
+      <li>
+        <a href="{% url 'cart' %}">cart</a>
+      </li>
+    </ol>
+    <label for="check" class="bar">
+      <span class="fa fa-bars" id="bars"></span>
+      <span class="fa fa-times" id="times"></span>
+    </label>
+  </nav>
+
+
+  <div class="container">
+
+    <h1>Shopping Cart</h1>
+
+
+    <div class="cart">
+
+      <div class="products">
+
+        {% for item in items %}
+
+        <div class="product">
+
+          <img src="{% static 'images/'|add:item.product.product_image %}">
+
+          <div class="product-info">
+
+            <h3 class="product-name">{{ item.product.name }}</h3>
+
+            <h4 class="product-price">Rs {{ item.product.price }}</h4>
+
+
+
+            <p class="product-quantity">Qnt: <input value="{{ item.quantity }}" name="">
+
+            <h4 class="product-offer">Total: Rs {{ item.get_total }}</h4>
+
+            <p  data-product="{{ item.product.id }}" data-action="remove" class="product-remove update-cart ">
+
+              <i class="fa fa-trash " aria-hidden="true"></i>
+
+              <span class="remove">Remove</span>
+
+            </p>
+
+          </div>
+
+        </div>
+
+        {% endfor %}
+      </div>
+
+
+      <div class="cart-total">
+
+        <p>
+
+          <span>Total Price</span>
+
+          <span>Rs {{ orders.get_cart_total }}</span>
+
+        </p>
+
+        <p>
+
+          <span>Number of Items</span>
+
+          <span>{{ orders.get_cart_items }}</span>
+
+        </p>
+
+
+
+        <a href="{% url 'checkout' %}">Proceed to Checkout</a>
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</body>
+
+</html>

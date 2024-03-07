@@ -1,0 +1,371 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/checkout.css' %}">
+    <link id="u-theme-google-font" rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    <link rel="stylesheet" type="text/css"
+        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/67c66657c7.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <title>Cart</title>
+</head>
+
+<body class="u-body u-xl-mode">
+    <input type="checkbox" id="check">
+    <nav>
+        <div class="icon">WTF</div>
+        <div class="search_box">
+            <input type="search" placeholder="Search Here">
+            <span class="fa fa-search"></span>
+        </div>
+        <ol>
+            <li>
+                <a href="{% url 'home' %}">home</a>
+            </li>
+            <li>
+                <a href="{% url 'order' %}">order</a>
+            </li>
+            <li>
+                <a href="{% url 'Log-In' %}">login</a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}">log out</a>
+            </li>
+
+            <li>
+                <a href="{% url 'cart' %}">cart</a>
+            </li>
+        </ol>
+        <label for="check" class="bar">
+            <span class="fa fa-bars" id="bars"></span>
+            <span class="fa fa-times" id="times"></span>
+        </label>
+    </nav>
+
+
+    <div class="container wrapper">
+        <div class="row cart-head">
+            <div class="container">
+                <div class="row">
+                    <p></p>
+                </div>
+                <div class="row">
+                    <div style="display: table; margin: auto; margin-top: 10px; margin-bottom: 10px;">
+                        <span class="step step_complete"> <a href="#" class="check-bc">Cart</a> <span
+                                class="step_line step_complete"> </span> <span class="step_line backline"> </span>
+                        </span>
+                        <span class="step step_complete"> <a href="#" class="check-bc">Checkout</a> <span
+                                class="step_line "> </span> <span class="step_line step_complete"> </span> </span>
+                        <span class="step_thankyou check-bc step_complete">Thank you</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+        <div class="row cart-body">
+            <form class="form-horizontal" method="POST" action="/checkout" id="form">
+                {% csrf_token %}
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-push-6 col-sm-push-6">
+                    <!--REVIEW ORDER-->
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Review Order <div class="pull-right"><small><a class="afix-1" href="{% url 'cart' %}">Edit
+                                        Cart</a></small>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            {% for item in items %}
+                            <div class="form-group">
+                                <div class="col-sm-3 col-xs-3">
+                                    <img class="img-responsive"
+                                        src="{% static 'images/'|add:item.product.product_image %}" />
+                                </div>
+                                <div class="col-sm-6 col-xs-6">
+                                    <div class="col-xs-12">{{ item.product.name }}</div>
+                                    <div class="col-xs-12"><small>Quantity:<span>{{ item.quantity }}</span></small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-xs-3 text-right">
+                                    <h6><span>Rs</span>{{ item.product.price }}</h6>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <hr />
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <strong>Subtotal</strong>
+                                    <div class="pull-right"><span>Rs</span><span>{{ orders.get_cart_total }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <small>Quantity</small>
+                                    <div class="pull-right"><span>{{ orders.get_cart_items }}</span></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <hr />
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <strong>Order Total</strong>
+                                    <div class="pull-right"><span>Rs</span><span>{{ orders.get_cart_total }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--REVIEW ORDER END-->
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-md-pull-6 col-sm-pull-6">
+                    <!--SHIPPING METHOD-->
+                    <div class="panel panel-info" id="shipping-info">
+                        <div class="panel-heading">Address</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <h4>Shipping Address</h4>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>First Name:</strong>
+                                    <input type="text" name="first_name" class="form-control" value="" />
+                                </div>
+                                <div class="span1"></div>
+                                <div class="col-md-6 col-xs-12">
+                                    <strong>Last Name:</strong>
+                                    <input type="text" name="last_name" class="form-control" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Address:</strong></div>
+                                <div class="col-md-12">
+                                    <input type="text" name="address" class="form-control" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>City:</strong></div>
+                                <div class="col-md-12">
+                                    <input type="text" name="city" class="form-control" value="" />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Phone Number:</strong></div>
+                                <div class="col-md-12"><input type="text" name="phone_number" class="form-control"
+                                        value="" /></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12"><strong>Email Address:</strong></div>
+                                <div class="col-md-12"><input type="text" name="email_address" class="form-control"
+                                        value="" /></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--SHIPPING METHOD END-->
+                    <!--CREDIT CART PAYMENT-->
+                    <!-- <div class="panel panel-info">
+                <div class="panel-heading"><span><i class="glyphicon glyphicon-lock"></i></span> Secure Payment</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-12"><strong>Card Type:</strong></div>
+                        <div class="col-md-12">
+                            <select id="CreditCardType" name="CreditCardType" class="form-control">
+                                <option value="5">Visa</option>
+                                <option value="6">MasterCard</option>
+                                <option value="7">American Express</option>
+                                <option value="8">Discover</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12"><strong>Credit Card Number:</strong></div>
+                        <div class="col-md-12"><input type="text" class="form-control" name="car_number" value="" /></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12"><strong>Card CVV:</strong></div>
+                        <div class="col-md-12"><input type="text" class="form-control" name="car_code" value="" /></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <strong>Expiration Date</strong>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="">
+                                <option value="">Month</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                        </select>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="">
+                                <option value="">Year</option>
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <span>Pay secure using your credit card.</span>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="cards">
+                                <li class="visa hand">Visa</li>
+                                <li class="mastercard hand">MasterCard</li>
+                                <li class="amex hand">Amex</li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <button type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            CREDIT CART PAYMENT END
+        </div> -->
+
+                    <div class="form-group" id="form-submit">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <button type="submit" class="btn btn-primary btn-submit-fix">Place Order</button>
+                        </div>
+                    </div>
+
+            </form>
+        </div>
+        <div class="row cart-footer">
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const user = '{{ customer }}'
+        var total = '{{ orders.get_cart_total }}'
+        var shipping = '{{ order.shipping }}'
+
+
+        if (user != 'AnonymousUser') {
+            document.getElementById('shipping-info').innerHTML = ''
+        }
+
+        var form = document.getElementById('form')
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault()
+            console.log('Form Submitted...')
+        })
+
+
+        document.getElementById('form-submit').addEventListener('click', function (e) {
+            submitFormData()
+        })
+
+        function submitFormData() {
+
+            console.log('Payment button clicked')
+
+            var userFormData = {
+
+                'first_name': null,
+                'last_name': null,
+                'address': null,
+                'city': null,
+                'phone_number': null,
+                'email_address': null,
+                'total': total,
+
+
+            }
+
+
+            if (shipping != 'False' && user != 'AnonymousUser') {
+                userFormData.address = '{{ userData.address }}'
+                userFormData.first_name = '{{ customer.first_name }}'
+                userFormData.last_name = '{{ customer.last_name }}'
+                userFormData.city = '{{ userData.city }}'
+                userFormData.phone_number = '{{ userData.phone }}'
+                userFormData.email_address = '{{ userData.email }}'
+
+
+            }
+
+            if (shipping != 'False' && user == 'AnonymousUser') {
+                userFormData.address = form.address.value
+                userFormData.first_name = form.first_name.value
+                userFormData.last_name = form.last_name.value
+                userFormData.city = form.city.value
+                userFormData.phone_number = form.phone_number.value
+                userFormData.email_address = form.email_address.value
+
+
+            }
+
+            var url = '/process_order/'
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': 'csrftoken',
+                },
+                body: JSON.stringify({ 'form': userFormData })
+            })
+
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('success:', data);
+                    alert('Transaction completed');
+                    window.location.href = "{% url 'order' %}"
+                })
+        }
+
+    </script>
+
+
+</body>
+
+</html>
